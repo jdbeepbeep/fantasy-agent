@@ -32,6 +32,18 @@ def format_suggestion(league_name: str, suggestion: dict) -> str:
         )
 
 
+def format_lineup_suggestions(league_name: str, suggestions: list, is_mine: bool) -> str:
+    whose = "Your" if is_mine else "Opponent's"
+    lines = [f"[{league_name}] {whose} optimal lineup differs from what's set:"]
+    for s in suggestions:
+        lines.append(
+            f"  Start {s['start'].name} over {s['sit'].name} (+{s['gain']:.1f} proj pts)"
+        )
+    if is_mine:
+        lines.append("Update in ESPN app before games lock.")
+    return "\n".join(lines)
+
+
 def issue_key(league_name: str, player_id: int, status: str) -> str:
     """A stable identifier used to avoid re-alerting on the same status."""
     return f"{league_name}:{player_id}:{status}"
