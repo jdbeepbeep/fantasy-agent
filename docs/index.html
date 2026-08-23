@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jamie's Casualty List</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+:root { --red: #AA0000; --gold: #B3995D; --bg: #0A0A0A; --card: #160A0A; --text: #F5F1E8; }
+* { box-sizing: border-box; }
+body {
+    background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif;
+    max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem;
+}
+h1, h2, h3 { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.04em; color: var(--red); }
+h1 { font-size: 2.8rem; text-shadow: 0 0 18px rgba(170,0,0,0.4); margin-bottom: 0.2rem; }
+.subtitle { color: var(--gold); margin-top: 0; margin-bottom: 0.5rem; }
+.updated { color: #999; font-size: 0.85rem; margin-bottom: 2rem; }
+hr {
+    border: none; height: 3px; margin: 2rem 0;
+    background: repeating-linear-gradient(90deg, var(--gold) 0px, var(--gold) 14px, transparent 14px, transparent 24px);
+}
+.league-card { background: var(--card); border: 1px solid var(--red); border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; }
+.matchup { color: var(--gold); font-size: 1.1rem; margin-bottom: 1rem; }
+table { width: 100%; border-collapse: collapse; margin: 0.75rem 0; }
+th, td { text-align: left; padding: 0.4rem 0.6rem; border-bottom: 1px solid #333; font-size: 0.9rem; }
+th { color: var(--gold); font-weight: 600; }
+.tag { display: inline-block; padding: 0.1rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+.tag-out { background: var(--red); color: var(--text); }
+.tag-questionable { background: var(--gold); color: var(--bg); }
+.swap-suggestion { background: #1A1A00; border-left: 3px solid var(--gold); padding: 0.6rem 1rem; margin: 0.5rem 0; font-size: 0.9rem; }
+.empty-state { color: #999; font-style: italic; }
+.weather-flag { background: #001A2A; border-left: 3px solid #4499CC; padding: 0.6rem 1rem; margin: 0.5rem 0; font-size: 0.9rem; }
+</style>
+
+</head>
+<body>
+<h1>🏈 JAMIE'S CASUALTY LIST</h1>
+<p class="subtitle">Unbothered &amp; Unbeaten.</p>
+<p class="updated">Last updated: Aug 23, 2026 at 01:01 PM UTC</p>
+<hr>
+
+        <div class="league-card">
+            <h2>tye.exe: null</h2>
+            <p class="empty-state">No matchup yet -- draft hasn't happened, or you're on a bye.</p>
+        </div>
+        <div class="league-card">
+            <h2>Nick...no</h2>
+            <p class="empty-state">No matchup yet -- draft hasn't happened, or you're on a bye.</p>
+        </div>
+</body>
+</html>
