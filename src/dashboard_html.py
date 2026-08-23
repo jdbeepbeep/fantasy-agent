@@ -127,12 +127,12 @@ def build_dashboard_html(league_sections: list) -> str:
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jamie's Casualty List</title>
+<title>The Post-Mortem</title>
 {STYLE}
 </head>
 <body>
-<h1>🏈 JAMIE'S CASUALTY LIST</h1>
-<p class="subtitle">Long Live Dr. J</p>
+<h1>🏈 THE POST-MORTEM</h1>
+<p class="subtitle">Autopsy performed weekly. Outlook is hazy.</p>
 <p class="updated">Last updated: {updated}</p>
 <div class="records"><span class="records-label">In-Season League Records:</span>{records_html}</div>
 <hr>
