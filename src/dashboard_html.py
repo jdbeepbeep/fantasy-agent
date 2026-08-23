@@ -24,6 +24,7 @@ h1 { font-size: 2.8rem; text-shadow: 0 0 18px rgba(170,0,0,0.4); margin-bottom: 
 .records { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
 .record-pill { background: var(--card); border: 1px solid var(--gold); border-radius: 20px; padding: 0.4rem 1rem; font-size: 0.9rem; }
 .record-pill b { color: var(--gold); }
+.records-label { font-size: 0.8rem; color: #888; text-transform: uppercase; letter-spacing: 0.05em; align-self: center; }
 hr {
     border: none; height: 3px; margin: 2rem 0;
     background: repeating-linear-gradient(90deg, var(--gold) 0px, var(--gold) 14px, transparent 14px, transparent 24px);
@@ -133,7 +134,7 @@ def build_dashboard_html(league_sections: list) -> str:
 <h1>🏈 JAMIE'S CASUALTY LIST</h1>
 <p class="subtitle">Long Live Dr. J</p>
 <p class="updated">Last updated: {updated}</p>
-<div class="records">{records_html}</div>
+<div class="records"><span class="records-label">In-Season League Records:</span>{records_html}</div>
 <hr>
 {sections_html}
 </body>
