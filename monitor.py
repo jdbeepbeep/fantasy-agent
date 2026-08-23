@@ -26,8 +26,10 @@ from src.messages import format_injury_alert, format_suggestion, format_lineup_s
 from src.notifier import send_text
 from src.research import get_injury_context, get_close_call_analysis
 from src.weather import get_game_weather, is_notable_weather
+from src.dashboard_html import build_dashboard_html
 
 STATE_FILE = "data/state.json"
+DASHBOARD_FILE = "docs/index.html"
 SKILL_POSITIONS = {"QB", "RB", "WR", "TE", "K"}
 
 
@@ -58,6 +60,7 @@ def save_state(seen: set) -> None:
 def main():
     seen = load_state()
     new_alerts = []
+    dashboard_sections = []
     swid, _ = get_espn_auth()
 
     for league_cfg in get_leagues():
@@ -70,6 +73,7 @@ def main():
         matchup = get_current_matchup(league, my_team)
         if matchup is None:
             print(f"{league_cfg.name}: no matchup yet (draft hasn't happened, or you're on a bye). Skipping.")
+            dashboard_sections.append({"name": league_cfg.name, "has_matchup": False})
             continue
 
         my_lineup, opponent_team, opp_lineup = get_my_lineup_and_opponent(matchup, my_team)
@@ -149,20 +153,35 @@ def main():
         # --- Weather check for my currently-started skill players ---
         game_date = next_sunday_iso()
         checked_teams = set()
+        weather_flags_for_dashboard = []
         for player in my_current:
             if player.position not in SKILL_POSITIONS or player.proTeam in checked_teams:
                 continue
             checked_teams.add(player.proTeam)
             weather = get_game_weather(player.proTeam, game_date)
             if is_notable_weather(weather):
+                flag_text = (
+                    f"Weather alert for {player.proTeam} game: "
+                    f"{weather['wind_mph']:.0f} mph wind, {weather['precip_pct']:.0f}% precip chance. "
+                    f"May affect {player.name} and others on that team."
+                )
+                weather_flags_for_dashboard.append(flag_text)
                 key = issue_key(league_cfg.name, hash(player.proTeam) % 10_000_000, f"weather_w{week}")
                 if key not in seen:
                     seen.add(key)
-                    new_alerts.append(
-                        f"[{league_cfg.name}] Weather alert for {player.proTeam} game: "
-                        f"{weather['wind_mph']:.0f} mph wind, {weather['precip_pct']:.0f}% precip chance. "
-                        f"May affect {player.name} and others on that team."
-                    )
+                    new_alerts.append(f"[{league_cfg.name}] {flag_text}")
+
+        # --- Collect this league's current snapshot for the web dashboard,
+        # regardless of whether anything new fired a text alert this run ---
+        dashboard_sections.append({
+            "name": league_cfg.name,
+            "has_matchup": True,
+            "week": week,
+            "opponent_name": opponent_team.team_name,
+            "my_current": my_current,
+            "my_swaps": my_swaps,
+            "weather_flags": weather_flags_for_dashboard,
+        })
 
     if new_alerts:
         message = "\n".join(new_alerts)
@@ -172,6 +191,11 @@ def main():
         print("No new injury news since last check.")
 
     save_state(seen)
+
+    os.makedirs(os.path.dirname(DASHBOARD_FILE), exist_ok=True)
+    with open(DASHBOARD_FILE, "w") as f:
+        f.write(build_dashboard_html(dashboard_sections))
+    print(f"Wrote dashboard to {DASHBOARD_FILE}")
 
 
 if __name__ == "__main__":

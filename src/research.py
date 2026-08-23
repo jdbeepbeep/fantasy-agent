@@ -14,15 +14,29 @@ from anthropic import Anthropic
 
 
 def _run_research(prompt: str, max_searches: int = 3) -> str:
-    client = Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
-    response = client.messages.create(
-        model="claude-sonnet-5",
-        max_tokens=400,
-        messages=[{"role": "user", "content": prompt}],
-        tools=[{"type": "web_search_20260318", "name": "web_search", "max_uses": max_searches}],
-    )
-    # Concatenate all text blocks (search results may interleave with reasoning)
-    return "\n".join(block.text for block in response.content if block.type == "text")
+    client = Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"], timeout=90.0)
+    try:
+        # Streaming rather than a blocking call -- web-search requests can
+        # run long enough that non-streaming calls are prone to being cut
+        # off by network infrastructure mid-request. This also means one
+        # slow/failed research call can't hang the whole monitoring run
+        # (which matters since this runs unattended in GitHub Actions).
+        text_parts = []
+        with client.messages.stream(
+            model="claude-sonnet-5",
+            max_tokens=400,
+            messages=[{"role": "user", "content": prompt}],
+            tools=[{"type": "web_search_20260318", "name": "web_search", "max_uses": max_searches}],
+        ) as stream:
+            for chunk in stream.text_stream:
+                text_parts.append(chunk)
+        return "".join(text_parts)
+    except Exception as e:
+        # Research is a nice-to-have enrichment, not critical -- if it
+        # fails (timeout, API error), skip it rather than crash the
+        # whole monitor run over one missing news blurb.
+        print(f"Research call failed (skipping this enrichment): {e}")
+        return ""
 
 
 def get_injury_context(player_name: str, team: str, status: str) -> str:

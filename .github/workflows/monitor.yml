@@ -45,10 +45,10 @@ jobs:
           YOUR_PHONE_NUMBER: ${{ secrets.YOUR_PHONE_NUMBER }}
         run: python3 monitor.py
 
-      - name: Save updated state
+      - name: Save updated state and dashboard
         run: |
           git config user.name "fantasy-agent-bot"
           git config user.email "actions@github.com"
-          git add data/state.json
-          git diff --cached --quiet || git commit -m "Update monitoring state [skip ci]"
+          git add data/state.json docs/index.html
+          git diff --cached --quiet || git commit -m "Update monitoring state and dashboard [skip ci]"
           git push
