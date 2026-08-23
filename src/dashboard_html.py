@@ -105,7 +105,7 @@ def build_dashboard_html(league_sections: list) -> str:
 </head>
 <body>
 <h1>🏈 JAMIE'S CASUALTY LIST</h1>
-<p class="subtitle">Unbothered &amp; Unbeaten.</p>
+<p class="subtitle">Long Live Dr. J</p>
 <p class="updated">Last updated: {updated}</p>
 <hr>
 {sections_html}
