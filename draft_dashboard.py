@@ -59,7 +59,7 @@ hr {
 """, unsafe_allow_html=True)
 
 st.title("🏈 JAMIE'S CASUALTY LIST")
-st.caption("Unbothered & Unbeaten.")
+st.caption("Long Live Dr. J")
 
 leagues_cfg = get_leagues()
 league_names = [cfg.name for cfg in leagues_cfg]
