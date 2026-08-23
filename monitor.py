@@ -73,7 +73,13 @@ def main():
         matchup = get_current_matchup(league, my_team)
         if matchup is None:
             print(f"{league_cfg.name}: no matchup yet (draft hasn't happened, or you're on a bye). Skipping.")
-            dashboard_sections.append({"name": league_cfg.name, "has_matchup": False})
+            dashboard_sections.append({
+                "name": league_cfg.name,
+                "has_matchup": False,
+                "wins": my_team.wins,
+                "losses": my_team.losses,
+                "ties": my_team.ties,
+            })
             continue
 
         my_lineup, opponent_team, opp_lineup = get_my_lineup_and_opponent(matchup, my_team)
@@ -181,6 +187,9 @@ def main():
             "my_current": my_current,
             "my_swaps": my_swaps,
             "weather_flags": weather_flags_for_dashboard,
+            "wins": my_team.wins,
+            "losses": my_team.losses,
+            "ties": my_team.ties,
         })
 
     if new_alerts:

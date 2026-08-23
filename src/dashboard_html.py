@@ -5,7 +5,8 @@ draft dashboard. Regenerated fresh every monitor.py run and published
 via GitHub Pages, so it's always a snapshot of "right now," not a log.
 """
 from __future__ import annotations
-from datetime import datetime, timezone
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 STYLE = """
 <style>
@@ -19,7 +20,10 @@ body {
 h1, h2, h3 { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.04em; color: var(--red); }
 h1 { font-size: 2.8rem; text-shadow: 0 0 18px rgba(170,0,0,0.4); margin-bottom: 0.2rem; }
 .subtitle { color: var(--gold); margin-top: 0; margin-bottom: 0.5rem; }
-.updated { color: #999; font-size: 0.85rem; margin-bottom: 2rem; }
+.updated { color: #999; font-size: 0.85rem; margin-bottom: 1.5rem; }
+.records { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+.record-pill { background: var(--card); border: 1px solid var(--gold); border-radius: 20px; padding: 0.4rem 1rem; font-size: 0.9rem; }
+.record-pill b { color: var(--gold); }
 hr {
     border: none; height: 3px; margin: 2rem 0;
     background: repeating-linear-gradient(90deg, var(--gold) 0px, var(--gold) 14px, transparent 14px, transparent 24px);
@@ -35,6 +39,10 @@ th { color: var(--gold); font-weight: 600; }
 .swap-suggestion { background: #1A1A00; border-left: 3px solid var(--gold); padding: 0.6rem 1rem; margin: 0.5rem 0; font-size: 0.9rem; }
 .empty-state { color: #999; font-style: italic; }
 .weather-flag { background: #001A2A; border-left: 3px solid #4499CC; padding: 0.6rem 1rem; margin: 0.5rem 0; font-size: 0.9rem; }
+.preview { border: 1px dashed #444; border-radius: 6px; padding: 1rem; margin-top: 1rem; opacity: 0.55; }
+.preview-label { font-size: 0.8rem; color: #888; margin: 0 0 0.5rem 0; text-transform: uppercase; letter-spacing: 0.05em; }
+.preview ul { margin: 0; padding-left: 1.2rem; font-size: 0.9rem; }
+.preview li { margin-bottom: 0.3rem; }
 </style>
 """
 
@@ -64,8 +72,17 @@ def build_league_section(section: dict) -> str:
     if not section["has_matchup"]:
         return f"""
         <div class="league-card">
-            <h2>{section['name']}</h2>
+            <h2>League: {section['name']}</h2>
             <p class="empty-state">No matchup yet -- draft hasn't happened, or you're on a bye.</p>
+            <div class="preview">
+                <p class="preview-label">Once your draft happens, this space will show</p>
+                <ul>
+                    <li>Which week you're in, and your current opponent</li>
+                    <li>Your full starting lineup, with injury flags (OUT/DOUBTFUL in red, QUESTIONABLE in gold)</li>
+                    <li>Suggested lineup swaps if your current lineup isn't optimal</li>
+                    <li>Weather flags for any outdoor games with notable wind or rain</li>
+                </ul>
+            </div>
         </div>"""
 
     swap_html = ""
@@ -81,7 +98,7 @@ def build_league_section(section: dict) -> str:
 
     return f"""
     <div class="league-card">
-        <h2>{section['name']}</h2>
+        <h2>League: {section['name']}</h2>
         <p class="matchup">Week {section['week']} vs {section['opponent_name']}</p>
         <h3>Confirmed Casualties (Your Lineup)</h3>
         {_lineup_table(section['my_current'])}
@@ -91,9 +108,18 @@ def build_league_section(section: dict) -> str:
     </div>"""
 
 
+def build_record_pill(section: dict) -> str:
+    wins = section.get("wins", 0)
+    losses = section.get("losses", 0)
+    ties = section.get("ties", 0)
+    record = f"{wins}-{losses}" + (f"-{ties}" if ties else "")
+    return f'<div class="record-pill">{section["name"]}: <b>{record}</b></div>'
+
+
 def build_dashboard_html(league_sections: list) -> str:
-    updated = datetime.now(timezone.utc).strftime("%b %d, %Y at %I:%M %p UTC")
+    updated = datetime.now(ZoneInfo("America/Chicago")).strftime("%b %d, %Y at %I:%M %p %Z")
     sections_html = "".join(build_league_section(s) for s in league_sections)
+    records_html = "".join(build_record_pill(s) for s in league_sections)
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -107,6 +133,7 @@ def build_dashboard_html(league_sections: list) -> str:
 <h1>🏈 JAMIE'S CASUALTY LIST</h1>
 <p class="subtitle">Long Live Dr. J</p>
 <p class="updated">Last updated: {updated}</p>
+<div class="records">{records_html}</div>
 <hr>
 {sections_html}
 </body>
