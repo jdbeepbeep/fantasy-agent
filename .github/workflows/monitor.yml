@@ -1,0 +1,54 @@
+name: Fantasy Monitor
+
+on:
+  schedule:
+    # Runs 3x/day: ~8am, 1pm, 8pm Central.
+    # Cron is in UTC. Central is UTC-5 (CDT) during the season until
+    # early November, then UTC-6 (CST) after DST ends -- so these times
+    # will drift an hour later (by clock time) once DST ends. Not worth
+    # over-engineering; adjust the numbers below in November if it bugs you.
+    - cron: "0 13 * * *"   # ~8am Central (CDT)
+    - cron: "0 18 * * *"   # ~1pm Central (CDT)
+    - cron: "0 1 * * *"    # ~8pm Central (CDT, previous day in UTC)
+  workflow_dispatch: {}     # lets you manually trigger a run from the Actions tab
+
+permissions:
+  contents: write   # needed so the workflow can commit the updated state file
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run monitor
+        env:
+          ESPN_SWID: ${{ secrets.ESPN_SWID }}
+          ESPN_S2: ${{ secrets.ESPN_S2 }}
+          LEAGUE_1_ID: ${{ secrets.LEAGUE_1_ID }}
+          LEAGUE_1_NAME: ${{ secrets.LEAGUE_1_NAME }}
+          LEAGUE_1_YEAR: ${{ secrets.LEAGUE_1_YEAR }}
+          LEAGUE_2_ID: ${{ secrets.LEAGUE_2_ID }}
+          LEAGUE_2_NAME: ${{ secrets.LEAGUE_2_NAME }}
+          LEAGUE_2_YEAR: ${{ secrets.LEAGUE_2_YEAR }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
+          TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
+          TWILIO_FROM_NUMBER: ${{ secrets.TWILIO_FROM_NUMBER }}
+          YOUR_PHONE_NUMBER: ${{ secrets.YOUR_PHONE_NUMBER }}
+        run: python3 monitor.py
+
+      - name: Save updated state
+        run: |
+          git config user.name "fantasy-agent-bot"
+          git config user.email "actions@github.com"
+          git add data/state.json
+          git diff --cached --quiet || git commit -m "Update monitoring state [skip ci]"
+          git push
