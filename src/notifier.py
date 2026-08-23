@@ -4,6 +4,9 @@ Sends SMS alerts via Twilio. Costs roughly $0.01 per text.
 from __future__ import annotations
 import os
 from twilio.rest import Client
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 def send_text(message: str) -> None:

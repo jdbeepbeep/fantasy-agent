@@ -11,6 +11,9 @@ every single check.
 from __future__ import annotations
 import os
 from anthropic import Anthropic
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 def _run_research(prompt: str, max_searches: int = 3) -> str:

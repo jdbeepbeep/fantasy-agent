@@ -9,6 +9,10 @@ import json
 import os
 import re
 from anthropic import Anthropic
+from dotenv import load_dotenv
+
+load_dotenv()  # ensures .env is loaded even if this module is imported
+                # standalone, without going through src.config first
 
 
 def normalize_name(name: str) -> str:

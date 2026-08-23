@@ -5,7 +5,10 @@ Keeps the prompt logic in one place so it's easy to tune later.
 from __future__ import annotations
 import os
 from anthropic import Anthropic
+from dotenv import load_dotenv
 from src.consensus import get_consensus_rank
+
+load_dotenv()
 
 
 def get_draft_advice(
