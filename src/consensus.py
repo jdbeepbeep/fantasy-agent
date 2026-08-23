@@ -30,7 +30,7 @@ def fetch_consensus_rankings(scoring_type: str, top_n: int = 150) -> dict:
     consensus list (deep sleepers, rookies not widely ranked yet, etc.)
     -- callers should fall back to ESPN's own projection for those.
     """
-    client = Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"], timeout=180.0)
+    client = Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"], timeout=300.0)
 
     prompt = f"""Search the web for current {scoring_type} fantasy football
 expert consensus draft rankings for the upcoming season (aggregate

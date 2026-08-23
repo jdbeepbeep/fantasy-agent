@@ -59,7 +59,7 @@ hr {
 """, unsafe_allow_html=True)
 
 st.title("🏈 JAMIE'S CASUALTY LIST")
-st.caption("Long Live Dr. J")
+st.caption("Unbothered & Unbeaten.")
 
 leagues_cfg = get_leagues()
 league_names = [cfg.name for cfg in leagues_cfg]
@@ -107,7 +107,7 @@ if "consensus_rankings" not in st.session_state:
     st.session_state.consensus_rankings = None
 
 if st.sidebar.button("⚰️ Read the Death Report"):
-    with st.spinner("Getting a second opinion on the body (up to ~2 min)..."):
+    with st.spinner("Getting a second opinion on the body (genuinely takes ~5 min, sit tight)..."):
         try:
             st.session_state.consensus_rankings = fetch_consensus_rankings(league.settings.scoring_type)
         except Exception as e:
