@@ -32,10 +32,12 @@
   "Nick...no:7073696:weather_w1",
   "Nick...no:7477308:lineup_w1",
   "Nick...no:8105573:lineup_w1",
+  "Nick...no:8437173:lineup_w1",
   "Nick...no:8633520:lineup_w1",
   "Nick...no:8819310:lineup_w1",
   "Nick...no:9002148:lineup_w1",
   "Nick...no:9170722:lineup_w1",
+  "Nick...no:9346988:weather_w1",
   "Nick...no:9512389:lineup_w1",
   "Nick...no:9720266:lineup_w1",
   "Nick...no:9807776:lineup_w1",
@@ -46,5 +48,6 @@
   "tye.exe: null:4567750:QUESTIONABLE",
   "tye.exe: null:4572680:QUESTIONABLE",
   "tye.exe: null:4870808:QUESTIONABLE",
-  "tye.exe: null:6576605:weather_w1"
+  "tye.exe: null:6576605:weather_w1",
+  "tye.exe: null:9346988:weather_w1"
 ]
