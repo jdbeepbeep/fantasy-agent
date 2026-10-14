@@ -82,6 +82,7 @@
   "Nick...no:4361050:QUESTIONABLE",
   "Nick...no:4362628:QUESTIONABLE",
   "Nick...no:4373632:opp_lineup_w4",
+  "Nick...no:4389154:lineup_w6",
   "Nick...no:4427366:QUESTIONABLE",
   "Nick...no:4428331:QUESTIONABLE",
   "Nick...no:4430878:QUESTIONABLE",
@@ -314,6 +315,7 @@
   "tye.exe: null:4520138:weather_w1",
   "tye.exe: null:4567750:QUESTIONABLE",
   "tye.exe: null:4572680:QUESTIONABLE",
+  "tye.exe: null:4587119:opp_lineup_w6",
   "tye.exe: null:4596448:QUESTIONABLE",
   "tye.exe: null:4701476:weather_w1",
   "tye.exe: null:4793208:weather_w5",
@@ -325,6 +327,7 @@
   "tye.exe: null:5067449:weather_w5",
   "tye.exe: null:5083158:lineup_w2",
   "tye.exe: null:5097041:weather_w2",
+  "tye.exe: null:5117582:closecall_w6",
   "tye.exe: null:5180653:weather_w3",
   "tye.exe: null:5326623:lineup_w5",
   "tye.exe: null:5448138:closecall_w5",
@@ -334,6 +337,7 @@
   "tye.exe: null:5675070:weather_w5",
   "tye.exe: null:5713580:weather_w2",
   "tye.exe: null:5720915:closecall_w4",
+  "tye.exe: null:5724374:weather_w6",
   "tye.exe: null:5739802:weather_w4",
   "tye.exe: null:5761855:closecall_w4",
   "tye.exe: null:5846944:closecall_w6",
@@ -411,5 +415,6 @@
   "tye.exe: null:9759021:weather_w3",
   "tye.exe: null:9761947:weather_w4",
   "tye.exe: null:9848884:weather_w1",
+  "tye.exe: null:9928270:weather_w6",
   "tye.exe: null:9982312:weather_w5"
 ]
